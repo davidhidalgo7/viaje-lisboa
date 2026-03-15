@@ -3,14 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Viaje a Lisboa - Itinerario</title>
 
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
 <style>
+
 body{
 font-family: Arial, sans-serif;
 margin:0;
 background:#f4f6f8;
 color:#333;
+-webkit-font-smoothing: antialiased;
 }
 
 header{
@@ -18,6 +23,7 @@ background:linear-gradient(120deg,#ff7e5f,#feb47b);
 color:white;
 padding:40px;
 text-align:center;
+padding:25px;
 }
 
 .container{
@@ -30,8 +36,18 @@ padding:20px;
 background:white;
 border-radius:10px;
 padding:20px;
-margin-bottom:20px;
+margin-bottom:25px;
 box-shadow:0 4px 10px rgba(0,0,0,0.1);
+transition: all 0.2s ease;
+}
+.day:hover{
+transform: translateY(-5px);
+}
+
+.day img{
+width:100%;
+border-radius:10px;
+margin:10px 0;
 }
 
 h2{
@@ -42,6 +58,22 @@ ul{
 line-height:1.7;
 }
 
+.map-button{
+display:inline-block;
+margin-top:10px;
+padding:8px 12px;
+background:#ff7e5f;
+color:white;
+border:none;
+border-radius:6px;
+text-decoration:none;
+font-size:14px;
+}
+
+.map-button:hover{
+background:#ff5a3d;
+}
+
 .tip{
 background:#fff3cd;
 padding:15px;
@@ -49,11 +81,47 @@ border-radius:8px;
 margin-top:20px;
 }
 
+#map{
+height:400px;
+margin-bottom:30px;
+border-radius:10px;
+}
+
 footer{
 text-align:center;
 padding:20px;
 color:#666;
 }
+#progressBar{
+border-radius:20px;
+box-shadow: 0 0 10px rgba(37,99,235,0.6);
+}
+h1{
+margin:0;
+font-size:28px;
+}
+.navbar{
+position:sticky;
+top:0;
+background:white;
+padding:10px;
+text-align:center;
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
+z-index:1000;
+}
+
+.navbar a{
+margin:0 10px;
+text-decoration:none;
+color:#ff7e5f;
+font-weight:bold;
+}
+
+.navbar a:hover{
+color:#ff5a3d;
+}
+
+
 </style>
 </head>
 
@@ -62,27 +130,68 @@ color:#666;
 <header>
 <h1>Viaje a Lisboa 🇵🇹</h1>
 <p>Itinerario de 4 días | 2–5 de abril</p>
+<div id="countdown" style="margin-top:15px;font-size:20px;font-weight:bold;"></div>
+
+<div style="width:100%;background:#ddd;border-radius:20px;height:20px;margin-top:15px;overflow:hidden;">
+  <div id="progressBar"
+       style="height:100%;width:0%;
+       background: linear-gradient(90deg, #2563eb, #60a5fa);
+       transition:width 0.5s linear;">
+  </div>
+</div>
+
+
 </header>
+<nav class="navbar">
+  <a href="#map">🗺 Mapa</a>
+  <a href="#dia1">Día 1</a>
+  <a href="#dia2">Día 2</a>
+  <a href="#dia3">Día 3</a>
+  <a href="#dia4">Día 4</a>
+</nav>
+
 
 <div class="container">
 
-<div class="day">
+<h2>Mapa del viaje</h2>
+<div id="map"></div>
+
+<div class="day" id="dia1">
+
 <h2>Día 1 – Jueves: Alfama y miradores</h2>
-<p>Llegada alrededor de las 12:00.</p>
+
+<img src="https://www.losviajesdegrimes.com/wp-content/uploads/2022/06/alfama-lisboa.jpg" alt="Alfama Lisboa">
+
 
 <ul>
-<li>Explorar el barrio de Alfama</li>
+<li>Explorar Alfama</li>
 <li>Castelo de São Jorge</li>
 <li>Miradouro de Santa Luzia</li>
 <li>Miradouro das Portas do Sol</li>
-<li>Cena en Alfama y escuchar fado</li>
+<li>Cena con fado</li>
 </ul>
+
+<a class="map-button" target="_blank"
+href="https://maps.google.com/?q=Castelo+de+Sao+Jorge">
+📍 Abrir en Google Maps
+</a>
+
 </div>
 
-<div class="day">
+<div class="day" id="dia2">
+
 <h2>Día 2 – Viernes: Belém + centro</h2>
 
-<h3>Mañana – Belém</h3>
+<img src="https://cdn-imgix.headout.com/microbrands-content-image/image/f94caf06c3d6d7779a089fea20611e99-AdobeStock_314194172.jpeg">
+
+<h3>Mañana – Centro</h3>
+<ul>
+<li>Praça do Comércio</li>
+<li>Elevador de Santa Justa</li>
+<li>Baixa</li>
+<li>Chiado</li>
+</ul>
+<h3>Tarde – Belém</h3>
 <ul>
 <li>Torre de Belém</li>
 <li>Monasterio de los Jerónimos</li>
@@ -90,62 +199,141 @@ color:#666;
 <li>Pastéis de Belém (pasteles típicos)</li>
 </ul>
 
-<h3>Tarde – Centro</h3>
-<ul>
-<li>Praça do Comércio</li>
-<li>Elevador de Santa Justa</li>
-<li>Baixa</li>
-<li>Chiado</li>
-</ul>
+<a class="map-button" target="_blank"
+href="https://maps.google.com/?q=Torre+de+Belem">
+📍 Abrir en Google Maps
+</a>
 
-<h3>Noche</h3>
-<ul>
-<li>Cenar o tomar algo en Bairro Alto</li>
-</ul>
 </div>
 
-<div class="day">
+<div class="day" id="dia3">
+
 <h2>Día 3 – Sábado: Excursión a Sintra</h2>
 
-<p>Tren desde Rossio (40 minutos).</p>
+<img src="https://media.traveler.es/photos/613763bac6202df75915f762/master/pass/190269.jpg">
 
+<p>Tren desde Rossio (40 minutos).</p>
 <ul>
 <li>Palacio da Pena</li>
 <li>Quinta da Regaleira</li>
-<li>Centro histórico de Sintra</li>
-<li>Castillo de los Moros (si hay tiempo)</li>
+<li>Centro histórico</li>
+<li>Castillo de los Moros</li>
 </ul>
 
-<p>Regreso a Lisboa sobre las 18:00–19:00.</p>
+<a class="map-button" target="_blank"
+href="https://maps.google.com/?q=Palacio+da+Pena">
+📍 Abrir en Google Maps
+</a>
+
 </div>
 
-<div class="day">
-<h2>Día 4 – Domingo: Últimas horas</h2>
+<div class="day" id="dia4">
+
+<h2>Día 4 – Últimas horas</h2>
+
+<img src="https://content-viajes.nationalgeographic.com.es/medio/2019/04/09/planes-dominicales_81408eae_1254x836.jpg">
 
 <ul>
 <li>Visitar LX Factory</li>
-<li>Comer en Mercado da Ribeira</li>
+<li>Mercado da Ribeira</li>
 <li>Paseo por Cais do Sodré</li>
 </ul>
 
-<p>Salir hacia el aeropuerto sobre las 12:30–13:00.</p>
+<a class="map-button" target="_blank"
+href="https://maps.google.com/?q=LX+Factory+Lisbon">
+📍 Abrir en Google Maps
+</a>
+
 </div>
 
 <div class="tip">
+
 <strong>Consejos:</strong>
+
 <ul>
-<li>Comprar la tarjeta de transporte Viva Viagem</li>
-<li>Llevar calzado cómodo (Lisboa tiene muchas cuestas)</li>
+<li>Comprar tarjeta Viva Viagem</li>
+<li>Llevar calzado cómodo</li>
 <li>Probar pasteles de nata</li>
-<li>Subir a varios miradores de la ciudad</li>
+<li>Subir a varios miradores</li>
 </ul>
-</div>
 
 </div>
 
-<footer>
-<p>Plan de viaje a Lisboa ✈️</p>
+</div>
+
+<footer style="text-align:center;
+margin-top:40px;
+padding:20px;
+background:#222;
+color:white;
+font-size:14px;">
+  © 2026 DavidHidalgo · Viaje a Lisboa ✈️
 </footer>
+
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+
+var map = L.map('map').setView([38.72, -9.14], 11);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+maxZoom:19
+}).addTo(map);
+
+L.marker([38.7139,-9.1335]).addTo(map)
+.bindPopup("Castelo de São Jorge");
+
+L.marker([38.6916,-9.2159]).addTo(map)
+.bindPopup("Torre de Belém");
+
+L.marker([38.7876,-9.3904]).addTo(map)
+.bindPopup("Palacio da Pena (Sintra)");
+
+L.marker([38.7038,-9.1781]).addTo(map)
+.bindPopup("LX Factory");
+
+const tripDate = new Date("2026-04-02T12:00:00").getTime();
+const now = new Date().getTime();
+
+const beginTrip = new Date("2026-02-01T00:00:00").getTime();
+
+const startDate = parseInt(beginTrip);
+
+function updateCountdown() {
+
+  const current = new Date().getTime();
+  const distance = tripDate - current;
+
+  if (distance <= 0) {
+    document.getElementById("countdown").innerHTML =
+      "¡Ya estás en Lisboa! 🇵🇹✈️";
+    document.getElementById("progressBar").style.width = "100%";
+    return;
+  }
+
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  document.getElementById("countdown").innerHTML =
+    "⏳ Faltan " + days + "d " +
+    hours + "h " +
+    minutes + "m " +
+    seconds + "s";
+
+  const total = tripDate - startDate;
+  const progress = ((current - startDate) / total) * 100;
+
+  document.getElementById("progressBar").style.width =
+    Math.min(Math.max(progress, 0), 100) + "%";
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+</script>
 
 </body>
 </html>
