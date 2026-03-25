@@ -1,339 +1,783 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Viaje a Lisboa - Itinerario</title>
-
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-
-<style>
-
-body{
-font-family: Arial, sans-serif;
-margin:0;
-background:#f4f6f8;
-color:#333;
--webkit-font-smoothing: antialiased;
-}
-
-header{
-background:linear-gradient(120deg,#ff7e5f,#feb47b);
-color:white;
-padding:40px;
-text-align:center;
-padding:25px;
-}
-
-.container{
-max-width:900px;
-margin:auto;
-padding:20px;
-}
-
-.day{
-background:white;
-border-radius:10px;
-padding:20px;
-margin-bottom:25px;
-box-shadow:0 4px 10px rgba(0,0,0,0.1);
-transition: all 0.2s ease;
-}
-.day:hover{
-transform: translateY(-5px);
-}
-
-.day img{
-width:100%;
-border-radius:10px;
-margin:10px 0;
-}
-
-h2{
-color:#ff7e5f;
-}
-
-ul{
-line-height:1.7;
-}
-
-.map-button{
-display:inline-block;
-margin-top:10px;
-padding:8px 12px;
-background:#ff7e5f;
-color:white;
-border:none;
-border-radius:6px;
-text-decoration:none;
-font-size:14px;
-}
-
-.map-button:hover{
-background:#ff5a3d;
-}
-
-.tip{
-background:#fff3cd;
-padding:15px;
-border-radius:8px;
-margin-top:20px;
-}
-
-#map{
-height:400px;
-margin-bottom:30px;
-border-radius:10px;
-}
-
-footer{
-text-align:center;
-padding:20px;
-color:#666;
-}
-#progressBar{
-border-radius:20px;
-box-shadow: 0 0 10px rgba(37,99,235,0.6);
-}
-h1{
-margin:0;
-font-size:28px;
-}
-.navbar{
-position:sticky;
-top:0;
-background:white;
-padding:10px;
-text-align:center;
-box-shadow:0 2px 8px rgba(0,0,0,0.1);
-z-index:1000;
-}
-
-.navbar a{
-margin:0 10px;
-text-decoration:none;
-color:#ff7e5f;
-font-weight:bold;
-}
-
-.navbar a:hover{
-color:#ff5a3d;
-}
-
-
-</style>
-</head>
-
-<body>
-
-<header>
-<h1>Viaje a Lisboa 🇵🇹</h1>
-<p>Itinerario de 4 días | 2–5 de abril</p>
-<div id="countdown" style="margin-top:15px;font-size:20px;font-weight:bold;"></div>
-
-<div style="width:100%;background:#ddd;border-radius:20px;height:20px;margin-top:15px;overflow:hidden;">
-  <div id="progressBar"
-       style="height:100%;width:0%;
-       background: linear-gradient(90deg, #2563eb, #60a5fa);
-       transition:width 0.5s linear;">
-  </div>
-</div>
-
-
-</header>
-<nav class="navbar">
-  <a href="#map">🗺 Mapa</a>
-  <a href="#dia1">Día 1</a>
-  <a href="#dia2">Día 2</a>
-  <a href="#dia3">Día 3</a>
-  <a href="#dia4">Día 4</a>
-</nav>
-
-
-<div class="container">
-
-<h2>Mapa del viaje</h2>
-<div id="map"></div>
-
-<div class="day" id="dia1">
-
-<h2>Día 1 – Jueves: Alfama y miradores</h2>
-
-<img src="https://www.losviajesdegrimes.com/wp-content/uploads/2022/06/alfama-lisboa.jpg" alt="Alfama Lisboa">
-
-
-<ul>
-<li>Explorar Alfama</li>
-<li>Castelo de São Jorge</li>
-<li>Miradouro de Santa Luzia</li>
-<li>Miradouro das Portas do Sol</li>
-<li>Cena con fado</li>
-</ul>
-
-<a class="map-button" target="_blank"
-href="https://maps.google.com/?q=Castelo+de+Sao+Jorge">
-📍 Abrir en Google Maps
-</a>
-
-</div>
-
-<div class="day" id="dia2">
-
-<h2>Día 2 – Viernes: Belém + centro</h2>
-
-<img src="https://cdn-imgix.headout.com/microbrands-content-image/image/f94caf06c3d6d7779a089fea20611e99-AdobeStock_314194172.jpeg">
-
-<h3>Mañana – Centro</h3>
-<ul>
-<li>Praça do Comércio</li>
-<li>Elevador de Santa Justa</li>
-<li>Baixa</li>
-<li>Chiado</li>
-</ul>
-<h3>Tarde – Belém</h3>
-<ul>
-<li>Torre de Belém</li>
-<li>Monasterio de los Jerónimos</li>
-<li>Monumento a los Descubrimientos</li>
-<li>Pastéis de Belém (pasteles típicos)</li>
-</ul>
-
-<a class="map-button" target="_blank"
-href="https://maps.google.com/?q=Torre+de+Belem">
-📍 Abrir en Google Maps
-</a>
-
-</div>
-
-<div class="day" id="dia3">
-
-<h2>Día 3 – Sábado: Excursión a Sintra</h2>
-
-<img src="https://media.traveler.es/photos/613763bac6202df75915f762/master/pass/190269.jpg">
-
-<p>Tren desde Rossio (40 minutos).</p>
-<ul>
-<li>Palacio da Pena</li>
-<li>Quinta da Regaleira</li>
-<li>Centro histórico</li>
-<li>Castillo de los Moros</li>
-</ul>
-
-<a class="map-button" target="_blank"
-href="https://maps.google.com/?q=Palacio+da+Pena">
-📍 Abrir en Google Maps
-</a>
-
-</div>
-
-<div class="day" id="dia4">
-
-<h2>Día 4 – Últimas horas</h2>
-
-<img src="https://content-viajes.nationalgeographic.com.es/medio/2019/04/09/planes-dominicales_81408eae_1254x836.jpg">
-
-<ul>
-<li>Visitar LX Factory</li>
-<li>Mercado da Ribeira</li>
-<li>Paseo por Cais do Sodré</li>
-</ul>
-
-<a class="map-button" target="_blank"
-href="https://maps.google.com/?q=LX+Factory+Lisbon">
-📍 Abrir en Google Maps
-</a>
-
-</div>
-
-<div class="tip">
-
-<strong>Consejos:</strong>
-
-<ul>
-<li>Comprar tarjeta Viva Viagem</li>
-<li>Llevar calzado cómodo</li>
-<li>Probar pasteles de nata</li>
-<li>Subir a varios miradores</li>
-</ul>
-
-</div>
-
-</div>
-
-<footer style="text-align:center;
-margin-top:40px;
-padding:20px;
-background:#222;
-color:white;
-font-size:14px;">
-  © 2026 DavidHidalgo · Viaje a Lisboa ✈️
-</footer>
-
-
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
-<script>
-
-var map = L.map('map').setView([38.72, -9.14], 11);
-
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-maxZoom:19
-}).addTo(map);
-
-L.marker([38.7139,-9.1335]).addTo(map)
-.bindPopup("Castelo de São Jorge");
-
-L.marker([38.6916,-9.2159]).addTo(map)
-.bindPopup("Torre de Belém");
-
-L.marker([38.7876,-9.3904]).addTo(map)
-.bindPopup("Palacio da Pena (Sintra)");
-
-L.marker([38.7038,-9.1781]).addTo(map)
-.bindPopup("LX Factory");
-
-const tripDate = new Date("2026-04-02T12:00:00").getTime();
-const now = new Date().getTime();
-
-const beginTrip = new Date("2026-02-01T00:00:00").getTime();
-
-const startDate = parseInt(beginTrip);
-
-function updateCountdown() {
-
-  const current = new Date().getTime();
-  const distance = tripDate - current;
-
-  if (distance <= 0) {
-    document.getElementById("countdown").innerHTML =
-      "¡Ya estás en Lisboa! 🇵🇹✈️";
-    document.getElementById("progressBar").style.width = "100%";
-    return;
-  }
-
-  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-  document.getElementById("countdown").innerHTML =
-    "⏳ Faltan " + days + "d " +
-    hours + "h " +
-    minutes + "m " +
-    seconds + "s";
-
-  const total = tripDate - startDate;
-  const progress = ((current - startDate) / total) * 100;
-
-  document.getElementById("progressBar").style.width =
-    Math.min(Math.max(progress, 0), 100) + "%";
-}
-
-setInterval(updateCountdown, 1000);
-updateCountdown();
-
-</script>
-
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Itinerario completo de 4 días en Lisboa (2-5 de abril). Explora Alfama, Belém, Sintra y más con mapa interactivo." />
+    <meta property="og:title" content="Viaje a Lisboa - Itinerario" />
+    <meta property="og:description" content="Itinerario de 4 días en Lisboa con mapa interactivo y lugares imprescindibles." />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75'>🇵🇹</text></svg>" />
+
+    <title>Viaje a Lisboa - Itinerario</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <style>
+      :root {
+        --primary-color: #ff7e5f;
+        --primary-dark: #ff5a3d;
+        --primary-light: #feb47b;
+        --text-color: #333;
+        --bg-color: #f4f6f8;
+        --white: white;
+        --border-color: #ddd;
+        --shadow: rgba(0, 0, 0, 0.1);
+        --progress-start: #2563eb;
+        --progress-end: #60a5fa;
+        --tip-bg: #fff3cd;
+        --card-bg: white;
+        --navbar-bg: white;
+      }
+
+      body.dark-mode {
+        --text-color: #e0e0e0;
+        --bg-color: #1a1a1a;
+        --white: #2a2a2a;
+        --card-bg: #2a2a2a;
+        --navbar-bg: #1f1f1f;
+        --border-color: #444;
+        --shadow: rgba(0, 0, 0, 0.3);
+        --tip-bg: #3a3500;
+      }
+
+      * {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background: var(--bg-color);
+        color: var(--text-color);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      header {
+        background: linear-gradient(120deg, var(--primary-color), var(--primary-light));
+        color: var(--white);
+        padding: 40px 25px;
+        text-align: center;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: auto;
+        padding: 20px;
+      }
+
+      article {
+        background: var(--card-bg);
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 10px var(--shadow);
+        transition: all 0.3s ease;
+      }
+      article:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px var(--shadow);
+      }
+
+      .day-image {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        margin: 10px 0;
+        opacity: 0.9;
+        transition: opacity 0.3s ease;
+      }
+
+      article:hover .day-image {
+        opacity: 1;
+      }
+
+      h2 {
+        color: var(--primary-color);
+      }
+
+      ul {
+        line-height: 1.7;
+      }
+
+      .map-button {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 8px 12px;
+        background: var(--primary-color);
+        color: var(--white);
+        border: none;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .map-button:hover {
+        background: var(--primary-dark);
+      }
+
+      .map-button:focus {
+        outline: 2px solid var(--primary-color);
+        outline-offset: 2px;
+      }
+
+      .tip {
+        background: var(--tip-bg);
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 20px;
+        border-left: 4px solid var(--primary-color);
+      }
+
+      #map {
+        height: 400px;
+        margin-bottom: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px var(--shadow);
+      }
+
+      @media (max-width: 768px) {
+        #map {
+          height: 300px;
+        }
+        h1 {
+          font-size: 24px;
+        }
+        .navbar > div {
+          flex-direction: column;
+          gap: 8px;
+        }
+        .navbar a {
+          margin: 0;
+          font-size: 14px;
+        }
+        article {
+          padding: 15px;
+        }
+      }
+
+      footer {
+        text-align: center;
+        padding: 20px;
+        color: #666;
+        position: relative;
+      }
+
+      .scroll-to-top {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: var(--primary-color);
+        color: var(--white);
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+        cursor: pointer;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 10px var(--shadow);
+        transition: all 0.3s ease;
+        z-index: 999;
+      }
+
+      .scroll-to-top:hover {
+        background: var(--primary-dark);
+        transform: translateY(-3px);
+      }
+
+      .scroll-to-top.show {
+        display: flex;
+      }
+
+      #progressBar {
+        border-radius: 20px;
+        box-shadow: 0 0 10px rgba(37, 99, 235, 0.6);
+        position: relative;
+      }
+
+      #progressPercent {
+        position: absolute;
+        right: 10px;
+        top: -25px;
+        font-size: 12px;
+        color: var(--progress-start);
+        font-weight: bold;
+      }
+      h1 {
+        margin: 0;
+        font-size: 28px;
+      }
+      .navbar {
+        position: sticky;
+        top: 0;
+        background: var(--navbar-bg);
+        padding: 10px;
+        text-align: center;
+        box-shadow: 0 2px 8px var(--shadow);
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .navbar > div {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+      }
+
+      .dark-mode-toggle {
+        background: var(--primary-color);
+        color: var(--white);
+        border: none;
+        border-radius: 20px;
+        padding: 8px 12px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: all 0.3s ease;
+      }
+
+      .dark-mode-toggle:hover {
+        background: var(--primary-dark);
+        transform: scale(1.05);
+      }
+
+      .navbar a {
+        margin: 0 10px;
+        text-decoration: none;
+        color: var(--primary-color);
+        font-weight: bold;
+        transition: color 0.3s ease;
+      }
+
+      .navbar a:hover {
+        color: var(--primary-dark);
+      }
+
+      .navbar a:focus {
+        outline: 2px solid var(--primary-color);
+        outline-offset: 2px;
+      }
+
+      .activity-item {
+        margin: 12px 0;
+        padding: 10px;
+        background: var(--white);
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .activity-content {
+        flex: 1;
+      }
+
+      .activity-text {
+        font-weight: 500;
+        margin-bottom: 5px;
+      }
+
+      .activity-info {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        font-size: 12px;
+        color: #888;
+        margin-top: 5px;
+      }
+
+      body.dark-mode .activity-info {
+        color: #aaa;
+      }
+
+      .info-badge {
+        background: var(--primary-light);
+        color: #333;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      body.dark-mode .info-badge {
+        background: var(--primary-color);
+        color: white;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <h1>Viaje a Lisboa 🇵🇹</h1>
+      <p>Itinerario de 4 días | 2–5 de abril</p>
+      <div
+        id="countdown"
+        style="margin-top: 15px; font-size: 20px; font-weight: bold"
+      ></div>
+
+      <div
+        style="
+          width: 100%;
+          background: var(--border-color);
+          border-radius: 20px;
+          height: 20px;
+          margin-top: 25px;
+          overflow: hidden;
+          position: relative;
+        "
+      >
+        <div
+          id="progressBar"
+          style="
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--progress-start), var(--progress-end));
+            transition: width 0.5s linear;
+          "
+        ></div>
+        <div id="progressPercent"></div>
+      </div>
+    </header>
+    <nav class="navbar">
+      <div>
+        <a href="#map">🗺 Mapa</a>
+        <a href="#dia1">Día 1</a>
+        <a href="#dia2">Día 2</a>
+        <a href="#dia3">Día 3</a>
+        <a href="#dia4">Día 4</a>
+      </div>
+      <button class="dark-mode-toggle" id="darkModeBtn" title="Cambiar tema">🌙</button>
+    </nav>
+
+    <div class="container">
+      <h2>Mapa del viaje</h2>
+      <div id="map"></div>
+
+      <article id="dia1">
+        <h2>Día 1 – Jueves: Alfama y miradores</h2>
+
+        <img
+          class="day-image"
+          src="https://www.losviajesdegrimes.com/wp-content/uploads/2022/06/alfama-lisboa.jpg"
+          alt="Alfama Lisboa - barrio histórico con calles empedradas"
+          loading="lazy"
+        />
+
+        <div class="activity-item" data-activity="d1-alfama">
+          <div class="activity-content">
+            <div class="activity-text">Explorar Alfama</div>
+            <div class="activity-info">
+              <span class="info-badge">⏱️ 2-3h</span>
+            </div>
+          </div>
+        </div>
+        <div class="activity-item" data-activity="d1-castelo">
+          <div class="activity-content">
+            <div class="activity-text">Castelo de São Jorge</div>
+            <div class="activity-info">
+              <span class="info-badge">🕐 09:00-21:00</span>
+              <span class="info-badge">💶 14€</span>
+              <span class="info-badge">⏱️ 1.5h</span>
+            </div>
+          </div>
+        </div>
+        <div class="activity-item" data-activity="d1-santaluzia">
+          <div class="activity-content">
+            <div class="activity-text">Miradouro de Santa Luzia</div>
+            <div class="activity-info">
+              <span class="info-badge">🆓 Gratis</span>
+              <span class="info-badge">⏱️ 30m</span>
+            </div>
+          </div>
+        </div>
+        <div class="activity-item" data-activity="d1-portas">
+          <div class="activity-content">
+            <div class="activity-text">Miradouro das Portas do Sol</div>
+            <div class="activity-info">
+              <span class="info-badge">🆓 Gratis</span>
+              <span class="info-badge">⏱️ 30m</span>
+            </div>
+          </div>
+        </div>
+        <div class="activity-item" data-activity="d1-fado">
+          <div class="activity-content">
+            <div class="activity-text">Cena con fado</div>
+            <div class="activity-info">
+              <span class="info-badge">🕐 20:00</span>
+              <span class="info-badge">💶 25-40€</span>
+              <span class="info-badge">⏱️ 2h</span>
+            </div>
+          </div>
+        </div>
+
+        <a
+          class="map-button"
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://maps.google.com/?q=Castelo+de+Sao+Jorge"
+          aria-label="Ver Castelo de São Jorge en Google Maps"
+        >
+          📍 Abrir en Google Maps
+        </a>
+      </article>
+
+      <article id="dia2">
+        <h2>Día 2 – Viernes: Belém + centro</h2>
+
+        <img
+          class="day-image"
+          src="https://cdn-imgix.headout.com/microbrands-content-image/image/f94caf06c3d6d7779a089fea20611e99-AdobeStock_314194172.jpeg"
+          alt="Centro de Lisboa y Belém - monumentos históricos"
+          loading="lazy"
+        />
+
+        <h3>Mañana – Centro</h3>
+        <div class="activity-item" data-activity="d2-praca">
+          <div class="activity-content">
+            <div class="activity-text">Praça do Comércio</div>
+            <div class="activity-info">
+              <span class="info-badge">🆓 Gratis</span>
+              <span class="info-badge">⏱️ 1h</span>
+            </div>
+          </div>
+        </div>
+        <div class="activity-item" data-activity="d2-elevador">
+          <div class="activity-content">
+            <div class="activity-text">Elevador de Santa Justa</div>
+            <div class="activity-info">
+              <span class="info-badge">💶 5.15€</span>
+              <span class="info-badge">⏱️ 30m</span>
+            </div>
+          </div>
+        </div>
+        <div class="activity-item" data-activity="d2-baixa">
+          <div class="activity-content">
+            <div class="activity-text">Baixa (Compras y paseo)</div>
+            <div class="activity-info">
+              <span class="info-badge">🆓 Gratis</span>
+              <span class="info-badge">⏱️ 1.5h</span>
+            </div>
+          </div>
+        </div>
+        <div class="activity-item" data-activity="d2-chiado">
+          <div class="activity-content">
+            <div class="activity-text">Chiado</div>
+            <div class="activity-info">
+              <span class="info-badge">🆓 Gratis</span>
+              <span class="info-badge">⏱️ 1h</span>
+            </div>
+          </div>
+        </div>
+        <h3>Tarde – Belém</h3>
+        <div class="activity-item" data-activity="d2-torre">
+          <div class="activity-content">
+            <div class="activity-text">Torre de Belém</div>
+            <div class="activity-info">
+              <span class="info-badge">🕐 10:00-17:30</span>
+              <span class="info-badge">💶 6€</span>
+              <span class="info-badge">⏱️ 1.5h</span>
+            </div>
+          </div>
+        </div>
+        <div class="activity-item" data-activity="d2-mosteiro">
+          <div class="activity-content">
+            <div class="activity-text">Monasterio de los Jerónimos</div>
+            <div class="activity-info">
+              <span class="info-badge">🕐 10:00-17:00</span>
+              <span class="info-badge">💶 12€</span>
+              <span class="info-badge">⏱️ 2h</span>
+            </div>
+          </div>
+        </div>
+        <div class="activity-item" data-activity="d2-monumento">
+          <div class="activity-content">
+            <div class="activity-text">Monumento a los Descubrimientos</div>
+            <div class="activity-info">
+              <span class="info-badge">🕐 10:00-17:00</span>
+              <span class="info-badge">💶 10€</span>
+              <span class="info-badge">⏱️ 1h</span>
+            </div>
+          </div>
+        </div>
+        <div class="activity-item" data-activity="d2-pasteis">
+          <div class="activity-content">
+            <div class="activity-text">Pastéis de Belém</div>
+            <div class="activity-info">
+              <span class="info-badge">💶 1.50€</span>
+              <span class="info-badge">⏱️ 30m</span>
+            </div>
+          </div>
+        </div>
+
+        <a
+          class="map-button"
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://maps.google.com/?q=Torre+de+Belem"
+          aria-label="Ver Torre de Belém en Google Maps"
+        >
+          📍 Abrir en Google Maps
+        </a>
+      </article>
+
+      <article id="dia3">
+        <h2>Día 3 – Sábado: Excursión a Sintra</h2>
+
+        <img
+          class="day-image"
+          src="https://media.traveler.es/photos/613763bac6202df75915f762/master/pass/190269.jpg"
+          alt="Sintra - Palacio da Pena con arquitectura romántica"
+          loading="lazy"
+        />
+
+        <p>Tren desde Rossio (40 minutos) - 💶 3.80€ ida y vuelta</p>
+        <div class="activity-item" data-activity="d3-tren">
+          <div class="activity-content">
+            <div class="activity-text">Viaje en tren a Sintra</div>
+            <div class="activity-info">
+              <span class="info-badge">🕐 Cada 15-20m</span>
+              <span class="info-badge">💶 3.80€</span>
+              <span class="info-badge">⏱️ 40m</span>
+            </div>
+          </div>
+        </div>
+        <div class="activity-item" data-activity="d3-pena">
+          <div class="activity-content">
+            <div class="activity-text">Palacio da Pena</div>
+            <div class="activity-info">
+              <span class="info-badge">🕐 09:00-19:00</span>
+              <span class="info-badge">💶 14€</span>
+              <span class="info-badge">⏱️ 2h</span>
+            </div>
+          </div>
+        </div>
+        <div class="activity-item" data-activity="d3-regaleira">
+          <div class="activity-content">
+            <div class="activity-text">Quinta da Regaleira</div>
+            <div class="activity-info">
+              <span class="info-badge">🕐 10:00-18:00</span>
+              <span class="info-badge">💶 12€</span>
+              <span class="info-badge">⏱️ 1.5h</span>
+            </div>
+          </div>
+        </div>
+        <div class="activity-item" data-activity="d3-centro">
+          <div class="activity-content">
+            <div class="activity-text">Centro histórico de Sintra</div>
+            <div class="activity-info">
+              <span class="info-badge">🆓 Gratis</span>
+              <span class="info-badge">⏱️ 1.5h</span>
+            </div>
+          </div>
+        </div>
+        <div class="activity-item" data-activity="d3-castillo">
+          <div class="activity-content">
+            <div class="activity-text">Castillo de los Moros</div>
+            <div class="activity-info">
+              <span class="info-badge">🕐 09:00-19:00</span>
+              <span class="info-badge">💶 8€</span>
+              <span class="info-badge">⏱️ 1.5h</span>
+            </div>
+          </div>
+        </div>
+
+        <a
+          class="map-button"
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://maps.google.com/?q=Palacio+da+Pena"
+          aria-label="Ver Palacio da Pena en Google Maps"
+        >
+          📍 Abrir en Google Maps
+        </a>
+      </article>
+
+      <article id="dia4">
+        <h2>Día 4 – Últimas horas</h2>
+
+        <img
+          class="day-image"
+          src="https://content-viajes.nationalgeographic.com.es/medio/2019/04/09/planes-dominicales_81408eae_1254x836.jpg"
+          alt="LX Factory en Lisboa - zona creativa con arte urbano"
+          loading="lazy"
+        />
+
+        <div class="activity-item" data-activity="d4-lxfactory">
+          <div class="activity-content">
+            <div class="activity-text">Visitar LX Factory</div>
+            <div class="activity-info">
+              <span class="info-badge">🕐 11:00-20:00</span>
+              <span class="info-badge">🆓 Gratis</span>
+              <span class="info-badge">⏱️ 1.5h</span>
+            </div>
+          </div>
+        </div>
+        <div class="activity-item" data-activity="d4-mercado">
+          <div class="activity-content">
+            <div class="activity-text">Mercado da Ribeira</div>
+            <div class="activity-info">
+              <span class="info-badge">🕐 10:00-23:00</span>
+              <span class="info-badge">💶 15-30€ comida</span>
+              <span class="info-badge">⏱️ 1.5h</span>
+            </div>
+          </div>
+        </div>
+        <div class="activity-item" data-activity="d4-caisdosodre">
+          <div class="activity-content">
+            <div class="activity-text">Paseo por Cais do Sodré</div>
+            <div class="activity-info">
+              <span class="info-badge">🆓 Gratis</span>
+              <span class="info-badge">⏱️ 1h</span>
+            </div>
+          </div>
+        </div>
+
+        <a
+          class="map-button"
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://maps.google.com/?q=LX+Factory+Lisbon"
+          aria-label="Ver LX Factory en Google Maps"
+        >
+          📍 Abrir en Google Maps
+        </a>
+      </article>
+
+      <div class="tip">
+        <strong>Consejos:</strong>
+
+        <ul>
+          <li>Comprar tarjeta Viva Viagem</li>
+          <li>Llevar calzado cómodo</li>
+          <li>Probar pasteles de nata</li>
+          <li>Subir a varios miradores</li>
+        </ul>
+      </div>
+    </div>
+
+    <button class="scroll-to-top" id="scrollToTop" aria-label="Volver al inicio" title="Volver al inicio">↑</button>
+
+    <footer
+      style="
+        text-align: center;
+        margin-top: 40px;
+        padding: 20px;
+        background: #222;
+        color: white;
+        font-size: 14px;
+      "
+    >
+      © 2026 DavidHidalgo · Viaje a Lisboa ✈️
+    </footer>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script>
+      var map = L.map("map").setView([38.72, -9.14], 11);
+
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap contributors, © CARTO',
+      }).addTo(map);
+
+      L.marker([38.7139, -9.1335]).addTo(map).bindPopup("Castelo de São Jorge");
+
+      L.marker([38.6916, -9.2159]).addTo(map).bindPopup("Torre de Belém");
+
+      L.marker([38.7876, -9.3904])
+        .addTo(map)
+        .bindPopup("Palacio da Pena (Sintra)");
+
+      L.marker([38.7038, -9.1781]).addTo(map).bindPopup("LX Factory");
+
+      // Dark mode
+      const darkModeBtn = document.getElementById('darkModeBtn');
+      const isDarkMode = localStorage.getItem('darkMode') === 'true';
+
+      if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+        darkModeBtn.textContent = '☀️';
+      }
+
+      darkModeBtn.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const newMode = document.body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode', newMode);
+        darkModeBtn.textContent = newMode ? '☀️' : '🌙';
+      });
+
+      const tripDate = new Date("2026-04-02T12:00:00").getTime();
+      const beginTrip = new Date("2026-02-01T00:00:00").getTime();
+      const startDate = parseInt(beginTrip);
+
+      function updateCountdown() {
+        const current = new Date().getTime();
+        const distance = tripDate - current;
+
+        if (distance <= 0) {
+          document.getElementById("countdown").innerHTML =
+            "¡Ya estás en Lisboa! 🇵🇹✈️";
+          document.getElementById("progressBar").style.width = "100%";
+          document.getElementById("progressPercent").innerHTML = "100%";
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+        );
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("countdown").innerHTML =
+          "⏳ Faltan " +
+          days +
+          "d " +
+          hours +
+          "h " +
+          minutes +
+          "m " +
+          seconds +
+          "s";
+
+        const total = tripDate - startDate;
+        const progress = ((current - startDate) / total) * 100;
+        const progressPercent = Math.min(Math.max(progress, 0), 100);
+
+        document.getElementById("progressBar").style.width = progressPercent + "%";
+        document.getElementById("progressPercent").innerHTML = Math.round(progressPercent) + "%";
+      }
+
+      // Actualizar contador y barra de progreso
+      setInterval(updateCountdown, 1000);
+      updateCountdown();
+
+      // Botón scroll to top
+      const scrollToTopBtn = document.getElementById("scrollToTop");
+
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 300) {
+          scrollToTopBtn.classList.add("show");
+        } else {
+          scrollToTopBtn.classList.remove("show");
+        }
+      });
+
+      scrollToTopBtn.addEventListener("click", () => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
+    </script>
+  </body>
 </html>
